@@ -7,6 +7,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 
+// Database dependencies
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/coworkingdb');
+
 // Application
 var app = express();
 
@@ -14,19 +19,25 @@ var app = express();
 /* ---
  * Routing
  */
-var index = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./routes/routes');
 
-app.use('/', index);
-app.use('/users', users);
+// Make our db accessible to our router
+app.use(function(req,res,next){
+  req.db = db;
+  next();
+});
 
 
 /* ---
  * View engine setup
  */
 app.set('views', path.join(__dirname, 'views/'));
-app.engine('hbs', exphbs({extname: '.hbs'}));
+app.engine('hbs', exphbs({
+  extname: '.hbs',
+  helpers: require('./public/js/helpers.js').helpers
+}));
 app.set('view engine', 'hbs');
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -40,6 +51,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+/* ---
+ * Call the routes file (must be below the app.use statements above!)
+ */
+app.use('/', routes);
 
 
 /* ---
@@ -62,5 +79,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

@@ -2,6 +2,36 @@
 
 <h1>{{title}}</h1>
 
-<p>Yay!</p>
+<p><a href="/register">Register</a></p>
+
+<form id="filter" method="POST" action="/">
+  <label for="location">Location</label>
+  <select name="location" id="location">
+    {{#each locations}}
+    <option value="{{this}}" {{#ifEq ../location this}}selected{{/ifEq}}>{{this}}</option>
+    {{/each}}
+  </select>
+
+  <button type="submit">Filter</button>
+</form>
+
+<h2>Users</h2>
+
+{{#unless userlist}}
+<p>Sorry, there are no users in {{location}}.
+{{/unless}}
+
+{{#if userlist}}
+<ul>
+  {{#each userlist}}
+    <li>
+      <h3>{{username}}</h3>
+      <p><a href="https://twitter.com/{{twitter}}">@{{twitter}}</a></p>
+      <p>{{location}}</p>
+      <p><b>Line of work:</b> {{work}}</p>
+    </li>
+  {{/each}}
+</ul>
+{{/if}}
 
 {{> footer }}

@@ -1,0 +1,31 @@
+{{> header }}
+
+<h1>{{title}}</h1>
+
+<form id="adduser" method="POST" action="/adduser">
+  <label for="username">User name</label>
+  <input name="username" id="username">
+
+  <label for="twitter">Twitter handle</label>
+  <input name="twitter" id="twitter">
+
+  <label for="location">Location</label>
+  <select name="location" id="location">
+    {{#each locations}}
+    <option value="{{this}}">{{this}}</option>
+    {{/each}}
+  </select>
+
+  <label for="work">Line of work</label>
+  <select name="work" id="work">
+    <option value=""></option>
+    <option value="Computer Hardware">Computer Hardware</option>
+    <option value="Computer Software">Computer Software</option>
+    <option value="Data Analyst">Data Analyst</option>
+    <option value="Design">Design</option>
+  </select>
+
+  <button type="submit">Sign up!</button>
+</form>
+
+{{> footer }}
