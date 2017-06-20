@@ -53,7 +53,10 @@ router.post('/', function(req, res, next) {
  * GET Registration page.
  */
 router.get('/register', function(req, res) {
-  res.render('register', { title: 'Coworking Co-op: Registration' });
+  res.render('register', {
+    title: 'Coworking Co-op: Registration',
+    locations: locations
+  });
 });
 
 
